@@ -1,0 +1,24 @@
+org: lcsfrancoltda # Your organizationhere
+service: sls-setup # Your service name here
+
+provider:
+  name: aws
+  region: sa-east-1
+  runtime: nodejs22.x
+  memorySize: 128
+  stage: ${ opt:stage, 'dev' }
+
+package:
+  individually: true
+
+build:
+  esbuild:
+    configFile: esbuild.config.mjs
+
+functions:
+  hello:
+    handler: src/hello.handler
+    events:
+      - httpApi:
+          path: /
+          method: get
