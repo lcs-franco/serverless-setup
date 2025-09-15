@@ -11,5 +11,22 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
+    "paths": {
+      "application/*": [
+        "src/application/*"
+      ],
+      "infra/*": [
+        "src/infra/*"
+      ],
+      "kernel/*": [
+        "src/kernel/*"
+      ],
+      "main/*": [
+        "src/main/*"
+      ],
+      "shared/*": [
+        "src/shared/*"
+      ]
+    }
   }
 }
