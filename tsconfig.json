@@ -12,19 +12,19 @@
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {
-      "application/*": [
+      "@application/*": [
         "src/application/*"
       ],
-      "infra/*": [
+      "@infra/*": [
         "src/infra/*"
       ],
-      "kernel/*": [
+      "@kernel/*": [
         "src/kernel/*"
       ],
-      "main/*": [
+      "@main/*": [
         "src/main/*"
       ],
-      "shared/*": [
+      "@shared/*": [
         "src/shared/*"
       ]
     }
