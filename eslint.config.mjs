@@ -11,7 +11,7 @@ export default defineConfig([
     rules: {
       quotes: ["error", "double"],
       semi: ["error", "always"],
-      "comma-dangle": ["error", "always-multiline"],
+      "comma-dangle": ["error", "only-multiline"],
       "object-curly-spacing": ["error", "always"],
       "array-bracket-spacing": ["error", "never"],
       "no-empty": "off",
