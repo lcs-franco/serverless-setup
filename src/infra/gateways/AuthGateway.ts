@@ -16,20 +16,17 @@ export class AuthGateway {
       ClientId: this.appConfig.auth.cognitoClientId,
       Username: email,
       Password: password,
-      UserAttributes: [
-        {
-          Name: "internalId",
-          Value: internalId,
-        },
-      ],
+      UserAttributes: [{ Name: "custom:internalId", Value: internalId }],
     });
 
-    const response = await cognitoClient.send(command);
+    const { UserSub: externalId } = await cognitoClient.send(command);
 
-    console.log("AuthGateway", response);
+    if (!externalId) {
+      throw new Error(`Cannot sign up user ${email}`);
+    }
 
     return {
-      externalId: "user.id",
+      externalId: externalId,
     };
   }
 }
