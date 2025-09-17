@@ -3,7 +3,7 @@ import { getSchema } from "@kernel/decorators/Schema";
 type TRouteType = "public" | "private";
 
 export abstract class Controller<TType extends TRouteType, TBody = undefined> {
-  public abstract handle(
+  protected abstract handle(
     request: Controller.Request<TType>
   ): Promise<Controller.Response<TBody>>;
 
