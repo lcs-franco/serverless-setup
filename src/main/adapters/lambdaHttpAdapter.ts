@@ -32,7 +32,7 @@ export function lambdaHttpAdapter(
           ? (event.requestContext.authorizer.jwt.claims.internalId as string)
           : null;
 
-      const response = await controller.handle({
+      const response = await controller.execute({
         body,
         params,
         queryParams,
@@ -67,6 +67,7 @@ export function lambdaHttpAdapter(
         });
       }
 
+      console.log("Unhandled error:", error);
       return lambdaErrorResponse({
         statusCode: 500,
         code: ErrorCode.INTERNAL_SERVER_ERROR,
