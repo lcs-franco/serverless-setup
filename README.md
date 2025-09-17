@@ -1,69 +1,64 @@
-<!--
-title: 'AWS Simple HTTP Endpoint example in NodeJS'
-description: 'This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.'
-layout: Doc
-framework: v4
-platform: AWS
-language: nodeJS
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, Inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+# 🚀 Serverless NodeJS Setup
 
-# Serverless Framework Node HTTP API on AWS
+**⚠️ Under active development**
 
-This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.
+Ready-to-use template for building Serverless APIs with NodeJS, TypeScript and AWS. Copy and paste to quickly start your projects.
 
-This template does not include any kind of persistence (database). For more advanced examples, check out the [serverless/examples repository](https://github.com/serverless/examples/) which includes Typescript, Mongo, DynamoDB and other examples.
+## ✨ What's included
 
-## Usage
+- **Clean Architecture** with Dependency Injection
+- **TypeScript** with path mapping
+- **AWS Cognito** for authentication
+- **Zod** for validation
+- **ESBuild** for fast builds
 
-### Deployment
+## 🚀 How to use
 
-In order to deploy the example, you need to run the following command:
+1. **Clone and install**
 
-```
-serverless deploy
+```bash
+git clone <your-repo>
+cd serverless-setup
+pnpm install
 ```
 
-After running deploy, you should see output similar to:
+2. **Configure**
 
-```
-Deploying "serverless-http-api" to stage "dev" (us-east-1)
+- Edit `sls/config/env.yml` with your variables
+- Adjust `serverless.yml` with your organization
 
-✔ Service deployed to stack serverless-http-api-dev (91s)
+3. **Deploy**
 
-endpoint: GET - https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/
-functions:
-  hello: serverless-http-api-dev-hello (1.6 kB)
-```
-
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [HTTP API (API Gateway V2) event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api).
-
-### Invocation
-
-After successful deployment, you can call the created application via HTTP:
-
-```
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/
+```bash
+sls deploy
 ```
 
-Which should result in response similar to:
-
-```json
-{ "message": "Go Serverless v4! Your function executed successfully!" }
-```
-
-### Local development
-
-The easiest way to develop and test your function is to use the `dev` command:
+## 📁 Structure
 
 ```
-serverless dev
+src/
+├── application/     # Controllers, Use Cases, Entities
+├── infra/          # Gateways, AWS Clients
+├── kernel/         # DI, Decorators
+├── main/           # Lambda adapters
+└── shared/         # Config, Types
 ```
 
-This will start a local emulator of AWS Lambda and tunnel your requests to and from AWS Lambda, allowing you to interact with your function as if it were running in the cloud.
+## 🔧 Development
 
-Now you can invoke the function as before, but this time the function will be executed locally. Now you can develop your function locally, invoke it, and see the results immediately without having to re-deploy.
+**Adding new function:**
 
-When you are done developing, don't forget to run `serverless deploy` to deploy the function to the cloud.
+1. Create Use Case in `src/application/useCases/`
+2. Create Controller in `src/application/controllers/`
+3. Create Lambda function in `src/main/functions/`
+4. Configure in `sls/functions/` file
+
+**Patterns:**
+
+- Use `@Injectable()` on all classes
+- Controllers extend `Controller<auth, response>`
+- Validate with Zod schemas using `@Schema()`
+
+---
+
+Production-ready serverless template 🎯
