@@ -1,7 +1,7 @@
 import { SignUpCommand } from "@aws-sdk/client-cognito-identity-provider";
 import { cognitoClient } from "@infra/clients/cognitoClient";
 import { Injectable } from "@kernel/decorators/Injectable";
-import { AppConfig } from "@shared/types/config/AppConfig";
+import { AppConfig } from "@shared/config/AppConfig";
 
 @Injectable()
 export class AuthGateway {
