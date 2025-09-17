@@ -27,3 +27,9 @@ Resources:
           AttributeDataType: String
       UsernameAttributes:
         - email
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      ClientName: ${self:service}-${self:provider.stage}-UserPoolClient
