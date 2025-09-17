@@ -21,7 +21,7 @@ Resources:
           RequireSymbols: true
           RequireUppercase: true
       Schema:
-        - Name: internalId
+        - Name: internalId # This is the custom attribute mencioned on src/main/adapters/lambdaHttpAdapter.ts:29
           Required: false
           Mutable: false
           AttributeDataType: String
