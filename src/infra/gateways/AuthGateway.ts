@@ -1,16 +1,19 @@
 import { SignUpCommand } from "@aws-sdk/client-cognito-identity-provider";
 import { cognitoClient } from "@infra/clients/cognitoClient";
 import { Injectable } from "@kernel/decorators/Injectable";
+import { AppConfig } from "@shared/types/config/AppConfig";
 
 @Injectable()
 export class AuthGateway {
+  constructor(private readonly appConfig: AppConfig) {}
+
   async signUp({
     email,
     password,
     internalId,
   }: AuthGateway.SignUpParams): Promise<AuthGateway.SignUpResult> {
     const command = new SignUpCommand({
-      ClientId: "",
+      ClientId: this.appConfig.auth.cognitoClientId,
       Username: email,
       Password: password,
       UserAttributes: [
@@ -23,7 +26,7 @@ export class AuthGateway {
 
     const response = await cognitoClient.send(command);
 
-    console.log(response);
+    console.log("AuthGateway", response);
 
     return {
       externalId: "user.id",
