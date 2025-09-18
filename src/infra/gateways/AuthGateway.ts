@@ -1,4 +1,7 @@
-import { SignUpCommand } from "@aws-sdk/client-cognito-identity-provider";
+import {
+  ConfirmSignUpCommand,
+  SignUpCommand,
+} from "@aws-sdk/client-cognito-identity-provider";
 import { cognitoClient } from "@infra/clients/cognitoClient";
 import { Injectable } from "@kernel/decorators/Injectable";
 import { AppConfig } from "@shared/config/AppConfig";
@@ -29,6 +32,21 @@ export class AuthGateway {
       externalId: externalId,
     };
   }
+
+  async emailConfirmation({
+    email,
+    code,
+  }: AuthGateway.EmailConfirmationParams): Promise<AuthGateway.EmailConfirmationResult> {
+    const command = new ConfirmSignUpCommand({
+      ClientId: this.appConfig.auth.cognitoClientId,
+      Username: email,
+      ConfirmationCode: code,
+    });
+
+    await cognitoClient.send(command);
+
+    return;
+  }
 }
 
 export namespace AuthGateway {
@@ -41,4 +59,11 @@ export namespace AuthGateway {
   export type SignUpResult = {
     externalId: string;
   };
+
+  export type EmailConfirmationParams = {
+    email: string;
+    code: string;
+  };
+
+  export type EmailConfirmationResult = void;
 }
