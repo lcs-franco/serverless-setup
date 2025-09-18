@@ -15,4 +15,4 @@ export const signUpSchema = z.object({
     ),
 });
 
-export type SignUpSchema = z.infer<typeof signUpSchema>;
+export type SignUpBody = z.infer<typeof signUpSchema>;
