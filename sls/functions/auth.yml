@@ -4,3 +4,10 @@ signUp:
     - http:
         path: /auth/sign-up
         method: POST
+
+emailConfirmation:
+  handler: src/main/functions/auth/emailConfirmation.handler
+  events:
+    - http:
+        path: /auth/email-confirmation
+        method: POST
