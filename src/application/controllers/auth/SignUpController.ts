@@ -27,7 +27,7 @@ export class SignUpController extends Controller<
     });
 
     return {
-      statusCode: 204,
+      statusCode: 201,
     };
   }
 }
