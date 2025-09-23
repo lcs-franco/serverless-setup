@@ -1,5 +1,6 @@
 import {
   ConfirmSignUpCommand,
+  InitiateAuthCommand,
   SignUpCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { cognitoClient } from "@infra/clients/cognitoClient";
@@ -9,6 +10,34 @@ import { AppConfig } from "@shared/config/AppConfig";
 @Injectable()
 export class AuthGateway {
   constructor(private readonly appConfig: AppConfig) {}
+
+  async signIn({
+    email,
+    password,
+  }: AuthGateway.SignInParams): Promise<AuthGateway.SignInResult> {
+    const command = new InitiateAuthCommand({
+      ClientId: this.appConfig.auth.cognito.client.id,
+      AuthFlow: "USER_PASSWORD_AUTH",
+      AuthParameters: {
+        USERNAME: email,
+        PASSWORD: password,
+      },
+    });
+
+    const { AuthenticationResult } = await cognitoClient.send(command);
+
+    if (
+      !AuthenticationResult?.AccessToken ||
+      !AuthenticationResult?.RefreshToken
+    ) {
+      throw new Error(`Cannot sign in user ${email}`);
+    }
+
+    return {
+      accessToken: AuthenticationResult.AccessToken,
+      refreshToken: AuthenticationResult.RefreshToken,
+    };
+  }
 
   async signUp({
     email,
@@ -66,4 +95,14 @@ export namespace AuthGateway {
   };
 
   export type EmailConfirmationResult = void;
+
+  export type SignInParams = {
+    email: string;
+    password: string;
+  };
+
+  export type SignInResult = {
+    accessToken: string;
+    refreshToken: string;
+  };
 }
