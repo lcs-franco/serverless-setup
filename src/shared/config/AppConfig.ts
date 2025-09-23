@@ -7,13 +7,21 @@ export class AppConfig {
 
   constructor() {
     this.auth = {
-      cognitoClientId: env.COGNITO_CLIENT_ID,
+      cognito: {
+        client: {
+          id: env.COGNITO_CLIENT_ID,
+        },
+      },
     };
   }
 }
 
 export namespace AppConfig {
   export type Auth = {
-    cognitoClientId: string;
+    cognito: {
+      client: {
+        id: string;
+      };
+    };
   };
 }
