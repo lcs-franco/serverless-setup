@@ -16,7 +16,7 @@ export class AuthGateway {
     internalId,
   }: AuthGateway.SignUpParams): Promise<AuthGateway.SignUpResult> {
     const command = new SignUpCommand({
-      ClientId: this.appConfig.auth.cognitoClientId,
+      ClientId: this.appConfig.auth.cognito.client.id,
       Username: email,
       Password: password,
       UserAttributes: [{ Name: "custom:internalId", Value: internalId }],
@@ -35,12 +35,12 @@ export class AuthGateway {
 
   async emailConfirmation({
     email,
-    code,
+    confirmationCode,
   }: AuthGateway.EmailConfirmationParams): Promise<AuthGateway.EmailConfirmationResult> {
     const command = new ConfirmSignUpCommand({
-      ClientId: this.appConfig.auth.cognitoClientId,
+      ClientId: this.appConfig.auth.cognito.client.id,
       Username: email,
-      ConfirmationCode: code,
+      ConfirmationCode: confirmationCode,
     });
 
     await cognitoClient.send(command);
@@ -62,7 +62,7 @@ export namespace AuthGateway {
 
   export type EmailConfirmationParams = {
     email: string;
-    code: string;
+    confirmationCode: string;
   };
 
   export type EmailConfirmationResult = void;
