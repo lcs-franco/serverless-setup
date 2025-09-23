@@ -67,6 +67,7 @@ export function lambdaHttpAdapter(
         });
       }
 
+      // eslint-disable-next-line no-console
       console.log("Unhandled error:", error);
       return lambdaErrorResponse({
         statusCode: 500,
