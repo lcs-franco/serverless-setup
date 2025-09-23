@@ -11,3 +11,10 @@ emailConfirmation:
     - http:
         path: /auth/email-confirmation
         method: POST
+
+signIn:
+  handler: src/main/functions/auth/signIn.handler
+  events:
+    - http:
+        path: /auth/sign-in
+        method: POST
