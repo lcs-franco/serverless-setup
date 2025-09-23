@@ -1,3 +1,4 @@
+import { InvalidConfirmationCode } from "@application/errors/app/InvalidConfirmationCode";
 import { AuthGateway } from "@infra/gateways/AuthGateway";
 import { Injectable } from "@kernel/decorators/Injectable";
 
@@ -9,9 +10,13 @@ export class EmailConfirmationUseCase {
     email,
     confirmationCode,
   }: EmailConfirmationUseCase.Input): Promise<EmailConfirmationUseCase.Output> {
-    await this.authGateway.emailConfirmation({ email, confirmationCode });
+    try {
+      await this.authGateway.emailConfirmation({ email, confirmationCode });
 
-    return;
+      return;
+    } catch {
+      throw new InvalidConfirmationCode();
+    }
   }
 }
 
