@@ -26,10 +26,13 @@ export class EmailConfirmationController extends Controller<
   > {
     const { code, email } = body;
 
-    await this.emailConfirmationUseCase.execute({ code, email });
+    await this.emailConfirmationUseCase.execute({
+      confirmationCode: code,
+      email,
+    });
 
     return {
-      statusCode: 200,
+      statusCode: 204,
     };
   }
 }

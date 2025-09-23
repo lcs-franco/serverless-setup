@@ -7,16 +7,18 @@ export class EmailConfirmationUseCase {
 
   async execute({
     email,
-    code,
+    confirmationCode,
   }: EmailConfirmationUseCase.Input): Promise<EmailConfirmationUseCase.Output> {
-    return this.authGateway.emailConfirmation({ email, code });
+    await this.authGateway.emailConfirmation({ email, confirmationCode });
+
+    return;
   }
 }
 
 export namespace EmailConfirmationUseCase {
   export type Input = {
     email: string;
-    code: string;
+    confirmationCode: string;
   };
 
   export type Output = void;
