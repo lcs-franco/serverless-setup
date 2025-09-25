@@ -9,6 +9,10 @@ provider:
   stage: ${ opt:stage, 'dev' }
   environment: ${file(./sls/config/env.yml)}
 
+custom:
+  cognito:
+    PoolName: ${self:service}-${self:provider.stage}-UserPool
+
 package:
   individually: true
 
