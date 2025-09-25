@@ -33,3 +33,5 @@ Resources:
     Properties:
       UserPoolId: !Ref UserPool
       ClientName: ${self:service}-${self:provider.stage}-UserPoolClient
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
