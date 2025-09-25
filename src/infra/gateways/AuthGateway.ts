@@ -1,5 +1,4 @@
 import {
-  ConfirmSignUpCommand,
   InitiateAuthCommand,
   SignUpCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
@@ -60,21 +59,6 @@ export class AuthGateway {
     return {
       externalId: externalId,
     };
-  }
-
-  async emailConfirmation({
-    email,
-    confirmationCode,
-  }: AuthGateway.EmailConfirmationParams): Promise<AuthGateway.EmailConfirmationResult> {
-    const command = new ConfirmSignUpCommand({
-      ClientId: this.appConfig.auth.cognito.client.id,
-      Username: email,
-      ConfirmationCode: confirmationCode,
-    });
-
-    await cognitoClient.send(command);
-
-    return;
   }
 }
 
