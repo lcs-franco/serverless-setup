@@ -27,7 +27,16 @@ export class SignUpUseCase {
     account.externalId = externalId;
 
     // TODO: save account on db
-    return;
+
+    const { accessToken, refreshToken } = await this.authGateway.signIn({
+      email,
+      password,
+    });
+
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }
 
@@ -37,5 +46,8 @@ export namespace SignUpUseCase {
     password: string;
   };
 
-  export type Output = void;
+  export type Output = {
+    accessToken: string;
+    refreshToken: string;
+  };
 }
