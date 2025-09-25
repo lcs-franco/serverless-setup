@@ -5,12 +5,14 @@ signUp:
         path: /auth/sign-up
         method: POST
 
-emailConfirmation:
-  handler: src/main/functions/auth/emailConfirmation.handler
+preSignUpTrigger:
+  handler: src/main/functions/auth/preSignUpTrigger.handler
   events:
-    - http:
-        path: /auth/email-confirmation
-        method: POST
+    - cognitoUserPool:
+        pool: ${self:custom.cognito.PoolName}
+        trigger: PreSignUp
+        existing: true
+        forceDeploy: true
 
 signIn:
   handler: src/main/functions/auth/signIn.handler
