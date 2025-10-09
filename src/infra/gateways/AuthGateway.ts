@@ -73,13 +73,6 @@ export namespace AuthGateway {
     externalId: string;
   };
 
-  export type EmailConfirmationParams = {
-    email: string;
-    confirmationCode: string;
-  };
-
-  export type EmailConfirmationResult = void;
-
   export type SignInParams = {
     email: string;
     password: string;
