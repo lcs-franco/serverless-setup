@@ -1,10 +1,14 @@
 import { Account } from "@application/entities/Account";
+import { AccountRepository } from "@infra/database/dynamo/repositories/AccountRepository";
 import { AuthGateway } from "@infra/gateways/AuthGateway";
 import { Injectable } from "@kernel/decorators/Injectable";
 
 @Injectable()
 export class SignUpUseCase {
-  constructor(private readonly authGateway: AuthGateway) {}
+  constructor(
+    private readonly authGateway: AuthGateway,
+    private readonly accountRepo: AccountRepository
+  ) {}
 
   async execute({
     email,
@@ -26,7 +30,7 @@ export class SignUpUseCase {
 
     account.externalId = externalId;
 
-    // TODO: save account on db
+    await this.accountRepo.create(account);
 
     const { accessToken, refreshToken } = await this.authGateway.signIn({
       email,
