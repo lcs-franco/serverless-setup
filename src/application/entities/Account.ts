@@ -4,7 +4,7 @@ export class Account {
   readonly id: string;
   readonly email: string;
   externalId: string | undefined;
-  readonly createdAt?: Date;
+  readonly createdAt: Date;
 
   constructor(attributes: Account.Attributes) {
     this.id = attributes.id ?? KSUID.randomSync().string;
