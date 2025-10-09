@@ -4,6 +4,7 @@ import { env } from "./env";
 @Injectable()
 export class AppConfig {
   readonly auth: AppConfig.Auth;
+  readonly database: AppConfig.Database;
 
   constructor() {
     this.auth = {
@@ -12,6 +13,9 @@ export class AppConfig {
           id: env.COGNITO_CLIENT_ID,
         },
       },
+    };
+    this.database = {
+      tableName: env.MAIN_TABLE_NAME,
     };
   }
 }
@@ -23,5 +27,9 @@ export namespace AppConfig {
         id: string;
       };
     };
+  };
+
+  export type Database = {
+    tableName: string;
   };
 }
