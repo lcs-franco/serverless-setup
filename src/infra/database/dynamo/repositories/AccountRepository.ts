@@ -1,4 +1,8 @@
-import { PutCommand, PutCommandInput } from "@aws-sdk/lib-dynamodb";
+import {
+  PutCommand,
+  PutCommandInput,
+  QueryCommand,
+} from "@aws-sdk/lib-dynamodb";
 
 import { Account } from "@application/entities/Account";
 import { dynamoClient } from "@infra/clients/dynamoClient";
@@ -9,6 +13,37 @@ import { AccountItem } from "../items/AccountItem";
 @Injectable()
 export class AccountRepository {
   constructor(private readonly appConfig: AppConfig) {}
+
+  async findByEmail(email: string): Promise<Account | null> {
+    const command = new QueryCommand({
+      TableName: this.appConfig.database.tableName,
+      IndexName: "GSI1",
+      KeyConditionExpression: "#GSI1PK = :GSI1PK AND #GSI1SK = :GSI1SK",
+      ExpressionAttributeNames: {
+        "#GSI1PK": "GSI1PK",
+        "#GSI1SK": "GSI1SK",
+      },
+      ExpressionAttributeValues: {
+        ":GSI1PK": AccountItem.getPK(email),
+        ":GSI1SK": AccountItem.getSK(email),
+      },
+      Limit: 1,
+    });
+
+    const { Items: account } = await dynamoClient.send(command);
+
+    console.log(account);
+    if (!account || account.length === 0) {
+      return null;
+    }
+
+    const accountItem = AccountItem.toEntity(
+      account[0] as AccountItem.ItemType
+    );
+    console.log(accountItem);
+
+    return accountItem;
+  }
 
   getPutItemCommand(account: Account): PutCommandInput {
     const accountItem = AccountItem.fromEntity(account);
