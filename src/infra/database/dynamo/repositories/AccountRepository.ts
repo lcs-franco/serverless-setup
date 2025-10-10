@@ -32,17 +32,11 @@ export class AccountRepository {
 
     const { Items: account } = await dynamoClient.send(command);
 
-    console.log(account);
-    if (!account || account.length === 0) {
+    if (!account) {
       return null;
     }
 
-    const accountItem = AccountItem.toEntity(
-      account[0] as AccountItem.ItemType
-    );
-    console.log(accountItem);
-
-    return accountItem;
+    return AccountItem.toEntity(account[0] as AccountItem.ItemType);
   }
 
   getPutItemCommand(account: Account): PutCommandInput {
