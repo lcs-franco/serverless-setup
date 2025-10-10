@@ -1,4 +1,5 @@
 import { Account } from "@application/entities/Account";
+import { EmailAlreadyInUse } from "@application/errors/app/EmailAlreadyInUse";
 import { AccountRepository } from "@infra/database/dynamo/repositories/AccountRepository";
 import { AuthGateway } from "@infra/gateways/AuthGateway";
 import { Injectable } from "@kernel/decorators/Injectable";
@@ -14,11 +15,11 @@ export class SignUpUseCase {
     email,
     password,
   }: SignUpUseCase.Input): Promise<SignUpUseCase.Output> {
-    // const emailAlreadyInUse = await this.accountRepo.findByEmail(email);
+    const emailAlreadyInUse = await this.accountRepo.findByEmail(email);
 
-    // if (emailAlreadyInUse) {
-    //   throw new Error("Email already in use");
-    // }
+    if (emailAlreadyInUse) {
+      throw new EmailAlreadyInUse();
+    }
 
     const account = new Account({ email });
 
