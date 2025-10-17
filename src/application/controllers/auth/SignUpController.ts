@@ -19,11 +19,11 @@ export class SignUpController extends Controller<
   }: Controller.Request<"public", SignUpBody>): Promise<
     Controller.Response<SignUpController.Response>
   > {
-    const { email, password } = body;
+    const { account, profile } = body;
 
     const { accessToken, refreshToken } = await this.signUpUseCase.execute({
-      email,
-      password,
+      account,
+      profile,
     });
 
     return {
