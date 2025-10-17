@@ -1,6 +1,8 @@
 import { Account } from "@application/entities/Account";
+import { Profile } from "@application/entities/Profile";
 import { EmailAlreadyInUse } from "@application/errors/app/EmailAlreadyInUse";
 import { AccountRepository } from "@infra/database/dynamo/repositories/AccountRepository";
+import { ProfileRepository } from "@infra/database/dynamo/repositories/ProfileRepository";
 import { AuthGateway } from "@infra/gateways/AuthGateway";
 import { Injectable } from "@kernel/decorators/Injectable";
 
@@ -8,12 +10,13 @@ import { Injectable } from "@kernel/decorators/Injectable";
 export class SignUpUseCase {
   constructor(
     private readonly authGateway: AuthGateway,
-    private readonly accountRepo: AccountRepository
+    private readonly accountRepo: AccountRepository,
+    private readonly profileRepo: ProfileRepository
   ) {}
 
   async execute({
-    email,
-    password,
+    account: { email, password },
+    profile: profileData,
   }: SignUpUseCase.Input): Promise<SignUpUseCase.Output> {
     const emailAlreadyInUse = await this.accountRepo.findByEmail(email);
 
@@ -22,6 +25,10 @@ export class SignUpUseCase {
     }
 
     const account = new Account({ email });
+    const profile = new Profile({
+      ...profileData,
+      accountId: account.id,
+    });
 
     const { externalId } = await this.authGateway.signUp({
       email,
@@ -31,7 +38,10 @@ export class SignUpUseCase {
 
     account.externalId = externalId;
 
-    await this.accountRepo.create(account);
+    await Promise.all([
+      this.accountRepo.create(account),
+      this.profileRepo.create(profile),
+    ]);
 
     const { accessToken, refreshToken } = await this.authGateway.signIn({
       email,
@@ -47,8 +57,14 @@ export class SignUpUseCase {
 
 export namespace SignUpUseCase {
   export type Input = {
-    email: string;
-    password: string;
+    account: {
+      email: string;
+      password: string;
+    };
+    profile: {
+      name: string;
+      birthDate: string;
+    };
   };
 
   export type Output = {
